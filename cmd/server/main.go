@@ -1,9 +1,29 @@
 package main
 
 import (
-	"fmt"
+	"log"
+
+	"github.com/joho/godotenv"
+
+	"kunime-api/internal/anime"
+	"kunime-api/internal/config"
+	"kunime-api/internal/http"
+	"kunime-api/internal/scraper"
 )
 
 func main() {
-	fmt.Println("Hello, World!");
+
+    // load .env
+    if err := godotenv.Load(); err != nil {
+        log.Println("no .env file found (or failed to load), using system env")
+    }
+
+    cfg := config.Load()
+    scr := scraper.NewCollyScraper(cfg.ScrapeBaseURL)
+    animeService := anime.NewService(scr)
+    app := http.NewServer(cfg, animeService)
+
+    if err := app.Listen(":" + cfg.Port); err != nil {
+        log.Fatal(err)
+    }
 }
