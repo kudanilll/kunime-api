@@ -31,11 +31,11 @@ func NewServer(cfg config.Config, animeSvc *anime.Service) *fiber.App {
     api := app.Group("/api/v1")
 
     // ongoing anime
-    api.Get("/ongoing", h.GetOngoingAnime)
-    api.Get("/ongoing/:page", h.GetOngoingAnime)
+    api.Get("/ongoing-anime", h.GetOngoingAnime)
+    api.Get("/ongoing-anime/:page", h.GetOngoingAnime)
 
-    api.Get("/anime/:slug", h.GetAnimeDetail)
-    api.Get("/anime/:slug/episodes", h.GetAnimeEpisodes)
+    // api.Get("/anime/:slug", h.GetAnimeDetail)
+    // api.Get("/anime/:slug/episodes", h.GetAnimeEpisodes)
     // api.Get("/search", h.SearchAnime)
 
     app.Get("/healthz", func(c *fiber.Ctx) error {

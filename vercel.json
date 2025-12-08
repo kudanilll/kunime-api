@@ -1,13 +1,13 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "routes": [
-    { "src": "^/$", "dest": "/api/index" },
-    { "src": "^/healthz$", "dest": "/api/index" },
-    { "src": "^/api/v1/.*$", "dest": "/api/index" }
+  "rewrites": [
+    { "source": "/", "destination": "api/index.go" },
+    { "source": "/api/v1/:path*", "destination": "api/index.go" },
+    { "source": "/healthz", "destination": "api/index.go" }
   ],
   "build": {
     "env": {
-      "GO_BUILD_FLAGS": "-ldflags '-s -w'"
+      "GO_BUILD_FLAGS": "-ldflags='-s -w'"
     }
   }
 }
