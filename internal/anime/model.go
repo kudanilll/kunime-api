@@ -23,6 +23,6 @@ type OngoingAnime struct {
 	Episode     int    `json:"episode"`
 	Day         string `json:"day"`   // Sabtu, Jumat, dll
 	Date        string `json:"date"`  // "06 Des"
-	PosterImage string `json:"posterImage"`
+	Image       string `json:"image"`
     Endpoint    string `json:"endpoint"`
 }
