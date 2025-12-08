@@ -57,7 +57,7 @@ func (h *AnimeHandler) GetOngoingAnime(c *fiber.Ctx) error {
 	}
 
 	return c.JSON(fiber.Map{
-		"page":  page,
-		"items": items,
+		"currentPage":  page,
+		"content": items,
 	})
 }

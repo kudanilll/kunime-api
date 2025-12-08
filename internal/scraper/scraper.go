@@ -18,6 +18,10 @@ type AnimeScraper struct {
 	baseURL string
 }
 
+func NewCollyScraper(baseURL string) *AnimeScraper {
+	return &AnimeScraper{baseURL: baseURL}
+}
+
 // ScrapeAnimeEpisodes implements anime.Scraper.
 func (s *AnimeScraper) ScrapeAnimeEpisodes(ctx context.Context, slug string) ([]anime.Episode, error) {
 	panic("unimplemented")
@@ -28,14 +32,7 @@ func (s *AnimeScraper) SearchAnime(ctx context.Context, query string) ([]anime.A
 	panic("unimplemented")
 }
 
-func NewCollyScraper(baseURL string) *AnimeScraper {
-	return &AnimeScraper{baseURL: baseURL}
-}
-
 func (s *AnimeScraper) ScrapeAnimeDetail(ctx context.Context, slug string) (*anime.Anime, error) {
-	// implement pake colly di file colly_scraper.go
-	// visit s.baseURL + "/anime/" + slug
-	// parse HTML → isi struct anime.Anime
 	panic("not implemented")
 }
 
@@ -58,17 +55,15 @@ func (s *AnimeScraper) ScrapeOngoingAnime(ctx context.Context, page int) ([]anim
 		}
 	})
 
-	// tiap <li> di dalam .venser .venz adalah 1 ongoing anime
 	c.OnHTML("div.venser div.venz ul li", func(e *colly.HTMLElement) {
 		if err := ctx.Err(); err != nil {
 			return
 		}
 
 		epText := strings.TrimSpace(e.ChildText(".epz"))      // "Episode 10"
-		dayText := strings.TrimSpace(e.ChildText(".epztipe")) // "Sabtu" (ada icon di depan)
+		dayText := strings.TrimSpace(e.ChildText(".epztipe")) // "Sabtu"
 		dateText := strings.TrimSpace(e.ChildText(".newnime"))// "06 Des"
 
-		// buang icon dari dayText
 		dayParts := strings.Fields(dayText)
 		day := ""
 		if len(dayParts) > 0 {
@@ -84,8 +79,8 @@ func (s *AnimeScraper) ScrapeOngoingAnime(ctx context.Context, page int) ([]anim
 			Episode:     extractEpisodeNumber(epText),
 			Day:         day,
 			Date:        dateText,
-			URL:         href,
 			PosterImage: absoluteURL(s.baseURL, img),
+			Endpoint:    href,
 		}
 
 		ongoings = append(ongoings, item)
@@ -109,8 +104,6 @@ func (s *AnimeScraper) ScrapeOngoingAnime(ctx context.Context, page int) ([]anim
 	if err := c.Visit(ongoingURL); err != nil {
 		return nil, err
 	}
-
-	// kalau nanti pakai Async(true), jangan lupa c.Wait()
 
 	if scrapeErr != nil {
 		return nil, scrapeErr
