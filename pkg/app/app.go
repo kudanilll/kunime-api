@@ -1,4 +1,4 @@
-package api
+package app
 
 import (
 	"net/http"
@@ -12,27 +12,30 @@ import (
 	"github.com/gofiber/adaptor/v2"
 )
 
-
 var (
-	handlerOnce sync.Once
-	handler     http.Handler
+	once    sync.Once
+	handler http.Handler
 )
 
-// initialise Fiber app
-func initFiberHandler() {
+// inisitialize Fiber app
+func initApp() {
 	cfg := config.Load()
 
 	scr := scraper.NewCollyScraper(cfg.ScrapeBaseURL)
-	animeSvc := anime.NewService(scr)
+	svc := anime.NewService(scr)
 
-	app := httpserver.NewServer(cfg, animeSvc)
+	app := httpserver.NewServer(cfg, svc)
 
-	// adaptor.FiberApp(*fiber.App) -> http.HandlerFunc
+	// Bungkus Fiber ke net/http handler
 	handler = adaptor.FiberApp(app)
 }
 
 func Handler(w http.ResponseWriter, r *http.Request) {
-	handlerOnce.Do(initFiberHandler)
+	once.Do(initApp)
+
+	if r.RequestURI == "" && r.URL != nil {
+		r.RequestURI = r.URL.RequestURI()
+	}
 
 	// CORS preflight handling
 	if r.Method == http.MethodOptions {

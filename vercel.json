@@ -1,9 +1,9 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "rewrites": [
-    { "source": "/", "destination": "/internal/api/index.go" },
-    { "source": "/api/v1/:path*", "destination": "/internal/api/index.go" },
-    { "source": "/healthz", "destination": "/internal/api/index.go" }
+    { "source": "/", "destination": "/api/index" },
+    { "source": "/api/v1/:path*", "destination": "/api/index" },
+    { "source": "/healthz", "destination": "/api/index" }
   ],
   "build": {
     "env": {
