@@ -17,3 +17,12 @@ type Episode struct {
     Synopsis  string `json:"synopsis"`
     VideoURL  string `json:"videoUrl"` // link video yg kamu kirim ke client
 }
+
+type OngoingAnime struct {
+	Title       string `json:"title"`
+	Episode     int    `json:"episode"`
+	Day         string `json:"day"`   // Sabtu, Jumat, dll
+	Date        string `json:"date"`  // "06 Des"
+	URL         string `json:"url"`
+	PosterImage string `json:"posterImage"`
+}
