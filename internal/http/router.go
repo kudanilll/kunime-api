@@ -19,7 +19,13 @@ func NewServer(cfg config.Config, animeSvc *anime.Service) *fiber.App {
     h := handler.NewAnimeHandler(animeSvc)
 
 	app.Get("/", func (c *fiber.Ctx) error  {
-		return c.JSON(fiber.Map{"message": "Welcome to Kunime API"})
+        return c.JSON(fiber.Map {
+            "github": "https://github.com/kudanilll/kunime-api", 
+            "support": "https://buymeacoffee.com/kudanil",
+            "endpoint": fiber.Map {
+                "getOngoingAnime": "/api/v1/ongoing/:page", 
+            },
+        })
 	})
 
     api := app.Group("/api/v1")
