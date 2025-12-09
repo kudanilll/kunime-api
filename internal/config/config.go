@@ -6,6 +6,7 @@ type Config struct {
     Port          string
     APIKey        string
     ScrapeBaseURL string
+    UserAgent     string
 }
 
 func Load() Config {
@@ -13,6 +14,7 @@ func Load() Config {
         Port:          getEnv("PORT", "8080"),
         APIKey:        mustEnv("API_KEY"),
         ScrapeBaseURL: mustEnv("SCRAPE_BASE_URL"),
+        UserAgent:     mustEnv("USER_AGENT"),
     }
 }
 

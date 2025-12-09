@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"kunime-api/internal/anime"
+	"kunime-api/internal/config"
 
 	"github.com/gocolly/colly/v2"
 )
@@ -24,6 +25,7 @@ func (s *AnimeScraper) ScrapeOngoingAnime(ctx context.Context, page int) ([]anim
 
 	c := colly.NewCollector(
 		colly.Async(false),
+		colly.UserAgent(config.Load().UserAgent),
 	)
 
 	_ = c.Limit(&colly.LimitRule{
