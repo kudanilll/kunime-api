@@ -45,3 +45,16 @@ func (h *AnimeHandler) GetCompletedAnime(c *fiber.Ctx) error {
 		"data": data,
 	})
 }
+
+func (h *AnimeHandler) GetGenres(c *fiber.Ctx) error {
+	data, err := h.svc.GetGenres(c.UserContext())
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+
+	return c.JSON(fiber.Map{
+		"data": data,
+	})
+}

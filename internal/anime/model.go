@@ -17,3 +17,9 @@ type CompletedAnime struct {
 	Image    string  `json:"image"`
 	Endpoint string  `json:"endpoint"`
 }
+
+type Genre struct {
+	Name     string `json:"name"`
+	Slug     string `json:"slug"`
+	Endpoint string `json:"endpoint"`
+}

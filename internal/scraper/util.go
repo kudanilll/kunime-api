@@ -56,3 +56,28 @@ func extractScore(text string) float64 {
 	}
 	return f
 }
+
+func extractGenreSlug(href string) string {
+	href = strings.TrimSpace(href)
+	if href == "" {
+		return ""
+	}
+
+	// kalau absolute URL → ambil path-nya
+	if strings.HasPrefix(href, "http://") || strings.HasPrefix(href, "https://") {
+		u, err := url.Parse(href)
+		if err != nil {
+			return ""
+		}
+		href = u.Path
+	}
+
+	// "/genres/action/" → "genres/action"
+	href = strings.Trim(href, "/")
+	if href == "" {
+		return ""
+	}
+
+	parts := strings.Split(href, "/")
+	return parts[len(parts)-1]
+}

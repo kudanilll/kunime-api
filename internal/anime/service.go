@@ -5,6 +5,7 @@ import "context"
 type Scraper interface {
 	ScrapeOngoingAnime(ctx context.Context, page int) ([]OngoingAnime, error)
 	ScrapeCompletedAnime(ctx context.Context, page int) ([]CompletedAnime, error)
+	ScrapeGenres(ctx context.Context) ([]Genre, error)
 }
 
 type Service struct {
@@ -27,4 +28,8 @@ func (s *Service) GetCompletedAnime(ctx context.Context, page int) ([]CompletedA
 		page = 1
 	}
 	return s.scraper.ScrapeCompletedAnime(ctx, page)
+}
+
+func (s *Service) GetGenres(ctx context.Context) ([]Genre, error) {
+	return s.scraper.ScrapeGenres(ctx)
 }
