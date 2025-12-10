@@ -23,3 +23,15 @@ type Genre struct {
 	Slug     string `json:"slug"`
 	Endpoint string `json:"endpoint"`
 }
+
+type GenrePageAnime struct {
+	Title    string   `json:"title"`
+	Endpoint string   `json:"endpoint"`
+	Studio   string   `json:"studio"`
+	Episodes string   `json:"episodes"` // "Unknown Eps", "12 Eps", "? Eps"
+	Rating   string   `json:"rating"`   // must be string to accommodate "N/A"
+	Genres   []string `json:"genres"`
+	Image    string   `json:"image"`
+	Synopsis string   `json:"synopsis"`
+	Season   string   `json:"season"` // "Fall 2025"
+}

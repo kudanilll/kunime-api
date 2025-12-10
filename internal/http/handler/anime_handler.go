@@ -2,6 +2,7 @@ package handler
 
 import (
 	"kunime-api/internal/anime"
+	"strconv"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -56,5 +57,33 @@ func (h *AnimeHandler) GetGenres(c *fiber.Ctx) error {
 
 	return c.JSON(fiber.Map{
 		"data": data,
+	})
+}
+
+func (h *AnimeHandler) GetGenrePage(c *fiber.Ctx) error {
+	slug := c.Params("genreSlug")
+	if slug == "" {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": "genre slug is required",
+		})
+	}
+
+	pageStr := c.Params("page", "1")
+	page, err := strconv.Atoi(pageStr)
+	if err != nil || page < 1 {
+		page = 1
+	}
+
+	data, err := h.svc.GetGenrePage(c.UserContext(), slug, page)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+
+	return c.JSON(fiber.Map{
+		"genre": slug,
+		"page":  page,
+		"data":  data,
 	})
 }
