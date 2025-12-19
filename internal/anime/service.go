@@ -7,6 +7,7 @@ type Scraper interface {
 	ScrapeCompletedAnime(ctx context.Context, page int) ([]CompletedAnime, error)
 	ScrapeGenres(ctx context.Context) ([]Genre, error)
 	ScrapeGenrePage(ctx context.Context, slug string, page int) ([]GenrePageAnime, error)
+	ScrapeAnimeBatch(ctx context.Context, slug string) (*AnimeBatch, error)
 }
 
 type Service struct {
@@ -40,4 +41,8 @@ func (s *Service) GetGenrePage(ctx context.Context, slug string, page int) ([]Ge
 		page = 1
 	}
 	return s.scraper.ScrapeGenrePage(ctx, slug, page)
+}
+
+func (s *Service) GetAnimeBatch(ctx context.Context, slug string) (*AnimeBatch, error) {
+	return s.scraper.ScrapeAnimeBatch(ctx, slug)
 }

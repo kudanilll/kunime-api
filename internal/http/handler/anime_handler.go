@@ -87,3 +87,21 @@ func (h *AnimeHandler) GetGenrePage(c *fiber.Ctx) error {
 		"data":  data,
 	})
 }
+
+func (h *AnimeHandler) GetAnimeBatch(c *fiber.Ctx) error {
+	slug := c.Params("slug")
+	if slug == "" {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": "anime slug is required",
+		})
+	}
+	
+	data, err := h.svc.GetAnimeBatch(c.Context(), slug)
+	if err != nil {
+		return c.Status(500).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+
+	return c.JSON(data)
+}
