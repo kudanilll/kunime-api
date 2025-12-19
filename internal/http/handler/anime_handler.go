@@ -89,14 +89,14 @@ func (h *AnimeHandler) GetGenrePage(c *fiber.Ctx) error {
 }
 
 func (h *AnimeHandler) GetAnimeBatch(c *fiber.Ctx) error {
-	slug := c.Params("slug")
-	if slug == "" {
+	animeSlug := c.Params("animeSlug")
+	if animeSlug == "" {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"error": "anime slug is required",
 		})
 	}
-	
-	data, err := h.svc.GetAnimeBatch(c.Context(), slug)
+
+	data, err := h.svc.GetAnimeBatch(c.Context(), animeSlug)
 	if err != nil {
 		return c.Status(500).JSON(fiber.Map{
 			"error": err.Error(),

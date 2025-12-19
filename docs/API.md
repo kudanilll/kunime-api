@@ -133,6 +133,55 @@ All endpoints below require `X-API-Key`.
 }
 ```
 
+### 5) Anime Batch Download Links
+
+- `GET /api/v1/anime/:animeSlug/batch`
+- `animeSlug` (path, required): e.g. `kni-s2-batch-sub-indo`
+
+**Response**
+
+```json
+{
+  "title": "Kakkou no Iinazuke Season 2 Batch Subtitle Indonesia",
+  "qualities": [
+    {
+      "quality": "MP4 360p",
+      "size": "0.46 GB",
+      "links": [
+        {
+          "server": "OtakuDrive",
+          "url": "https://desustream.com/safelink/..."
+        },
+        {
+          "server": "DesuDrive",
+          "url": "https://desustream.com/safelink/..."
+        }
+      ]
+    },
+    {
+      "quality": "MP4 480p",
+      "size": "0.79 GB",
+      "links": [
+        {
+          "server": "Mega",
+          "url": "https://desustream.com/safelink/..."
+        }
+      ]
+    },
+    {
+      "quality": "MP4 720p",
+      "size": "1.52 GB",
+      "links": [
+        {
+          "server": "AceFile",
+          "url": "https://desustream.com/safelink/..."
+        }
+      ]
+    }
+  ]
+}
+```
+
 ## Error Handling
 
 - `400` – invalid or missing path parameters

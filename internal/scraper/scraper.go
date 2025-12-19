@@ -318,7 +318,7 @@ func (s *AnimeScraper) ScrapeGenrePage(ctx context.Context, slug string, page in
 
 func (s *AnimeScraper) ScrapeAnimeBatch(
 	ctx context.Context,
-	slug string,
+	animeSlug string,
 ) (*anime.AnimeBatch, error) {
 
 	c := colly.NewCollector(
@@ -380,7 +380,7 @@ func (s *AnimeScraper) ScrapeAnimeBatch(
 	})
 
 	// IMPORTANT: batch endpoint, not anime endpoint
-	url := fmt.Sprintf("%s/batch/%s/", s.baseURL, slug)
+	url := fmt.Sprintf("%s/batch/%s/", s.baseURL, animeSlug)
 
 	if err := c.Visit(url); err != nil {
 		return nil, err

@@ -49,7 +49,7 @@ func NewServer(cfg config.Config, animeSvc *anime.Service) *fiber.App {
 	api.Get("/genre/:genreSlug/:page", h.GetGenrePage)
 
     // anime batch
-    api.Get("/anime/:slug/batch", h.GetAnimeBatch)
+    api.Get("/anime/:animeSlug/batch", h.GetAnimeBatch)
     
     // health check
     app.Get("/healthz", func(c *fiber.Ctx) error {
