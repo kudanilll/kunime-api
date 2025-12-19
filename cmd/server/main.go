@@ -19,7 +19,10 @@ func main() {
     }
 
     cfg := config.Load()
-    scr := scraper.NewCollyScraper(cfg.ScrapeBaseURL)
+    scr := scraper.NewCollyScraper(
+	    cfg.ScrapeBaseURL,
+	    cfg.UserAgent,
+    )
     animeService := anime.NewService(scr)
     app := http.NewServer(cfg, animeService)
 

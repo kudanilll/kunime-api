@@ -20,8 +20,10 @@ var (
 // inisitialize Fiber app
 func initApp() {
 	cfg := config.Load()
-
-	scr := scraper.NewCollyScraper(cfg.ScrapeBaseURL)
+	scr := scraper.NewCollyScraper(
+	    cfg.ScrapeBaseURL,
+	    cfg.UserAgent,
+	)
 	svc := anime.NewService(scr)
 
 	app := httpserver.NewServer(cfg, svc)
