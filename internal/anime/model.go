@@ -67,3 +67,13 @@ type AnimeDetail struct {
 	Image         string   `json:"image"`
 	Synopsis      string   `json:"synopsis"`
 }
+
+type AnimeEpisode struct {
+	Episode int    `json:"episode"`
+	URL     string `json:"url"`
+}
+
+type AnimeEpisodeList struct {
+	AnimeSlug string         `json:"anime_slug"`
+	Episodes  []AnimeEpisode `json:"episodes"`
+}

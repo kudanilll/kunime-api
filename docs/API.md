@@ -214,6 +214,33 @@ All endpoints below require `X-API-Key`.
 }
 ```
 
+### 7) Anime Episode List
+
+- `GET /api/v1/anime/:animeSlug/episodes`
+- `animeSlug` (path, required): e.g. `kakkou-iinazuke-s2-sub-indo`
+
+**Response**
+
+```json
+{
+  "anime_slug": "kakkou-iinazuke-s2-sub-indo",
+  "episodes": [
+    {
+      "episode": 1,
+      "url": "https://otakudesu.best/episode/kni-s2-episode-1-sub-indo/"
+    },
+    {
+      "episode": 2,
+      "url": "https://otakudesu.best/episode/kni-s2-episode-2-sub-indo/"
+    },
+    {
+      "episode": 3,
+      "url": "https://otakudesu.best/episode/kni-s2-episode-3-sub-indo/"
+    }
+  ]
+}
+```
+
 ## Error Handling
 
 - `400` – invalid or missing path parameters

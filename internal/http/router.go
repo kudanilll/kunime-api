@@ -29,6 +29,7 @@ func NewServer(cfg config.Config, animeSvc *anime.Service) *fiber.App {
 				"Get Anime by Genre & Page": "/api/v1/genre/:genreSlug/:page",
                 "Get Anime Batch":           "/api/v1/anime/:animeSlug/batch",
                 "Get Anime Detail":          "/api/v1/anime/:animeSlug",
+                "Get Anime Episodes":        "/api/v1/anime/:animeSlug/episodes",
             },
         })
 	})
@@ -49,11 +50,10 @@ func NewServer(cfg config.Config, animeSvc *anime.Service) *fiber.App {
     // genre page
 	api.Get("/genre/:genreSlug/:page", h.GetGenrePage)
 
-    // anime batch
+    // anime batch, detail, episode list
     api.Get("/anime/:animeSlug/batch", h.GetAnimeBatch)
-
-    // anime detail
     api.Get("/anime/:animeSlug", h.GetAnimeDetail)
+    api.Get("/anime/:animeSlug/episodes", h.GetAnimeEpisodes)
     
     // health check
     app.Get("/healthz", func(c *fiber.Ctx) error {

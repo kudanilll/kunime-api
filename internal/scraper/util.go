@@ -89,3 +89,28 @@ func extractValue(text string) string {
 	}
 	return strings.TrimSpace(parts[1])
 }
+
+func extractEpisodeFromTitle(title string) int {
+	title = strings.ToLower(title)
+
+	// cari kata "episode"
+	idx := strings.Index(title, "episode")
+	if idx == -1 {
+		return 0
+	}
+
+	part := title[idx+len("episode"):]
+	part = strings.TrimSpace(part)
+
+	fields := strings.Fields(part)
+	if len(fields) == 0 {
+		return 0
+	}
+
+	n, err := strconv.Atoi(fields[0])
+	if err != nil {
+		return 0
+	}
+
+	return n
+}
