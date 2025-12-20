@@ -40,11 +40,11 @@ go run ./cmd/server/main.go
 API_KEY=supersecret SCRAPE_BASE_URL=https://otakudesu.best USER_AGENT="Mozilla/5.0 ..." go run ./cmd/server/main.go
 ```
 
-The server will be available at `http://localhost:<PORT>`.
+The server will be available at `http://localhost:<PORT>`
 
 ## Endpoints
 
-All endpoints require the header `X-API-Key: <API_KEY>`.
+All endpoints require the header `X-API-Key: <API_KEY>`
 
 | Method | Path                             | Description                            |
 | ------ | -------------------------------- | -------------------------------------- |
@@ -83,7 +83,7 @@ Example response (shortened):
 
 ## Documentation
 
-Full API details live in [`docs/API.md`](docs/API.md).
+Full API details live in [`docs/API.md`](docs/API.md)
 
 ## Project Structure (short)
 
@@ -94,6 +94,12 @@ Full API details live in [`docs/API.md`](docs/API.md).
 - `internal/scraper` – scraping logic with Colly
 - `internal/middleware` – logging and API key middleware
 
+## Buy me a coffee
+
+If you find this project helpful, consider buying me a coffee!
+
+<a href="https://buymeacoffee.com/kudanil" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
+
 ## License
 
-Apache License 2.0 – see [`LICENSE`](LICENSE).
+The project is licensed under the Apache License 2.0 - See [`LICENSE`](LICENSE) for more details
