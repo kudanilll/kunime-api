@@ -8,6 +8,7 @@ type Scraper interface {
 	ScrapeGenres(ctx context.Context) ([]Genre, error)
 	ScrapeGenrePage(ctx context.Context, slug string, page int) ([]GenrePageAnime, error)
 	ScrapeAnimeBatch(ctx context.Context, animeSlug string) (*AnimeBatch, error)
+	ScrapeAnimeDetail(ctx context.Context, animeSlug string) (*AnimeDetail, error)
 }
 
 type Service struct {
@@ -45,4 +46,8 @@ func (s *Service) GetGenrePage(ctx context.Context, slug string, page int) ([]Ge
 
 func (s *Service) GetAnimeBatch(ctx context.Context, animeSlug string) (*AnimeBatch, error) {
 	return s.scraper.ScrapeAnimeBatch(ctx, animeSlug)
+}
+
+func (s *Service) GetAnimeDetail(ctx context.Context, animeSlug string) (*AnimeDetail, error) {
+	return s.scraper.ScrapeAnimeDetail(ctx, animeSlug)
 }

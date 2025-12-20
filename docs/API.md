@@ -182,6 +182,38 @@ All endpoints below require `X-API-Key`.
 }
 ```
 
+### 6) Anime Detail
+
+- `GET /api/v1/anime/:animeSlug`
+- `animeSlug` (path, required): e.g. `kakkou-iinazuke-s2-sub-indo`
+
+**Response**
+
+```json
+{
+  "title": "Kakkou no Iinazuke Season 2",
+  "japanese_title": "カッコウの許嫁 Season2",
+  "score": "6.72",
+  "type": "TV",
+  "status": "Completed",
+  "total_episode": "12",
+  "duration": "23 Menit",
+  "release_date": "Jul 08, 2025",
+  "studio": "Okuruto Noboru",
+  "producers": [
+    "Kodansha",
+    "Crunchyroll",
+    "BS NTV",
+    "Kadokawa",
+    "Bit grooove promotion",
+    "Imagine"
+  ],
+  "genres": ["Comedy", "Harem", "Romance", "Shounen"],
+  "image": "https://otakudesu.best/wp-content/uploads/2025/12/Kakkou-no-Iinazuke-Season-2-Sub-Indo.jpg",
+  "synopsis": "Musim kedua dari anime Kakkou no Iinazuke."
+}
+```
+
 ## Error Handling
 
 - `400` – invalid or missing path parameters

@@ -105,3 +105,21 @@ func (h *AnimeHandler) GetAnimeBatch(c *fiber.Ctx) error {
 
 	return c.JSON(data)
 }
+
+func (h *AnimeHandler) GetAnimeDetail(c *fiber.Ctx) error {
+	animeSlug := c.Params("animeSlug")
+	if animeSlug == "" {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": "anime slug is required",
+		})
+	}
+
+	data, err := h.svc.GetAnimeDetail(c.UserContext(), animeSlug)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+
+	return c.JSON(data)
+}

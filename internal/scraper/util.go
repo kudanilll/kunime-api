@@ -81,3 +81,11 @@ func extractGenreSlug(href string) string {
 	parts := strings.Split(href, "/")
 	return parts[len(parts)-1]
 }
+
+func extractValue(text string) string {
+	parts := strings.SplitN(text, ":", 2)
+	if len(parts) != 2 {
+		return ""
+	}
+	return strings.TrimSpace(parts[1])
+}

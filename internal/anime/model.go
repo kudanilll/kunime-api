@@ -51,3 +51,19 @@ type AnimeBatch struct {
 	Title     string         `json:"title"`
 	Qualities []BatchQuality `json:"qualities"`
 }
+
+type AnimeDetail struct {
+	Title         string   `json:"title"`
+	JapaneseTitle string   `json:"japanese_title"`
+	Score         string   `json:"score"`
+	Type          string   `json:"type"`
+	Status        string   `json:"status"`
+	TotalEpisode  string   `json:"total_episode"`
+	Duration      string   `json:"duration"`
+	ReleaseDate   string   `json:"release_date"`
+	Studio        string   `json:"studio"`
+	Producers     []string `json:"producers"`
+	Genres        []string `json:"genres"`
+	Image         string   `json:"image"`
+	Synopsis      string   `json:"synopsis"`
+}
