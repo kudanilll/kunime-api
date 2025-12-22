@@ -57,14 +57,14 @@ func (s *AnimeScraper) ScrapeOngoingAnime(ctx context.Context, page int) ([]anim
 	// mapping page -> URL:
 	// page 1  => /ongoing-anime/
 	// page 2+ => /ongoing-anime/page/{page}/
-	var ongoingURL string
+	var url string
 	if page <= 1 {
-		ongoingURL = fmt.Sprintf("%s/ongoing-anime/", s.baseURL)
+		url = fmt.Sprintf("%s/ongoing-anime/", s.baseURL)
 	} else {
-		ongoingURL = fmt.Sprintf("%s/ongoing-anime/page/%d/", s.baseURL, page)
+		url = fmt.Sprintf("%s/ongoing-anime/page/%d/", s.baseURL, page)
 	}
 
-	if err := c.Visit(ongoingURL); err != nil {
+	if err := visitWithRetry(c, url); err != nil {
 		return nil, err
 	}
 

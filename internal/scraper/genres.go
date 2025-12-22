@@ -46,8 +46,7 @@ func (s *AnimeScraper) ScrapeGenres(ctx context.Context) ([]anime.Genre, error) 
 	})
 
 	url := fmt.Sprintf("%s/genre-list/", s.baseURL)
-
-	if err := c.Visit(url); err != nil {
+	if err := visitWithRetry(c, url); err != nil {
 		return nil, err
 	}
 

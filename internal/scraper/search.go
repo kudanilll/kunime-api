@@ -53,7 +53,7 @@ func (s *AnimeScraper) SearchAnime(
 		q,
 	)
 
-	if err := c.Visit(searchURL); err != nil {
+	if err := visitWithRetry(c, searchURL); err != nil {
 		return nil, err
 	}
 

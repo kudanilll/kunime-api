@@ -62,7 +62,7 @@ func (s *AnimeScraper) ScrapeCompletedAnime(ctx context.Context, page int) ([]an
 		url = fmt.Sprintf("%s/complete-anime/page/%d/", s.baseURL, page)
 	}
 
-	if err := c.Visit(url); err != nil {
+	if err := visitWithRetry(c, url); err != nil {
 		return nil, err
 	}
 

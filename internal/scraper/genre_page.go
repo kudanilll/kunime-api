@@ -69,8 +69,7 @@ func (s *AnimeScraper) ScrapeGenrePage(ctx context.Context, slug string, page in
 	})
 
 	url := fmt.Sprintf("%s/genres/%s/page/%d/", s.baseURL, slug, page)
-
-	if err := c.Visit(url); err != nil {
+	if err := visitWithRetry(c, url); err != nil {
 		return nil, err
 	}
 

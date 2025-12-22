@@ -48,7 +48,7 @@ func (s *AnimeScraper) ScrapeAnimeEpisodes(
 	})
 
 	url := fmt.Sprintf("%s/anime/%s/", s.baseURL, animeSlug)
-	if err := c.Visit(url); err != nil {
+	if err := visitWithRetry(c, url); err != nil {
 		return nil, err
 	}
 

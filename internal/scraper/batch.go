@@ -67,7 +67,7 @@ func (s *AnimeScraper) ScrapeAnimeBatch(
 	// IMPORTANT: batch endpoint, not anime endpoint
 	url := fmt.Sprintf("%s/batch/%s/", s.baseURL, animeSlug)
 
-	if err := c.Visit(url); err != nil {
+	if err := visitWithRetry(c, url); err != nil {
 		return nil, err
 	}
 
