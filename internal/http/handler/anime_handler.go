@@ -1,8 +1,10 @@
 package handler
 
 import (
+	"context"
 	"kunime-api/internal/anime"
 	"strconv"
+	"time"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -18,7 +20,11 @@ func NewAnimeHandler(svc *anime.Service) *AnimeHandler {
 func (h *AnimeHandler) GetOngoingAnime(c *fiber.Ctx) error {
 	page := getPageParam(c)
 
-	data, err := h.svc.GetOngoingAnime(c.UserContext(), page)
+	ctx, cancel := context.WithTimeout(c.UserContext(), 15*time.Second)
+	defer cancel()
+
+	data, err := h.svc.GetOngoingAnime(ctx, page)
+
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error": err.Error(),
@@ -34,7 +40,10 @@ func (h *AnimeHandler) GetOngoingAnime(c *fiber.Ctx) error {
 func (h *AnimeHandler) GetCompletedAnime(c *fiber.Ctx) error {
 	page := getPageParam(c)
 
-	data, err := h.svc.GetCompletedAnime(c.UserContext(), page)
+	ctx, cancel := context.WithTimeout(c.UserContext(), 15*time.Second)
+	defer cancel()
+
+	data, err := h.svc.GetCompletedAnime(ctx, page)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error": err.Error(),
@@ -48,7 +57,10 @@ func (h *AnimeHandler) GetCompletedAnime(c *fiber.Ctx) error {
 }
 
 func (h *AnimeHandler) GetGenres(c *fiber.Ctx) error {
-	data, err := h.svc.GetGenres(c.UserContext())
+	ctx, cancel := context.WithTimeout(c.UserContext(), 15*time.Second)
+	defer cancel()
+
+	data, err := h.svc.GetGenres(ctx)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error": err.Error(),
@@ -74,7 +86,10 @@ func (h *AnimeHandler) GetGenrePage(c *fiber.Ctx) error {
 		page = 1
 	}
 
-	data, err := h.svc.GetGenrePage(c.UserContext(), slug, page)
+	ctx, cancel := context.WithTimeout(c.UserContext(), 15*time.Second)
+	defer cancel()
+
+	data, err := h.svc.GetGenrePage(ctx, slug, page)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error": err.Error(),
@@ -96,7 +111,10 @@ func (h *AnimeHandler) GetAnimeBatch(c *fiber.Ctx) error {
 		})
 	}
 
-	data, err := h.svc.GetAnimeBatch(c.Context(), animeSlug)
+	ctx, cancel := context.WithTimeout(c.UserContext(), 15*time.Second)
+	defer cancel()
+
+	data, err := h.svc.GetAnimeBatch(ctx, animeSlug)
 	if err != nil {
 		return c.Status(500).JSON(fiber.Map{
 			"error": err.Error(),
@@ -114,7 +132,10 @@ func (h *AnimeHandler) GetAnimeDetail(c *fiber.Ctx) error {
 		})
 	}
 
-	data, err := h.svc.GetAnimeDetail(c.UserContext(), animeSlug)
+	ctx, cancel := context.WithTimeout(c.UserContext(), 15*time.Second)
+	defer cancel()
+
+	data, err := h.svc.GetAnimeDetail(ctx, animeSlug)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error": err.Error(),
@@ -132,7 +153,10 @@ func (h *AnimeHandler) GetAnimeEpisodes(c *fiber.Ctx) error {
 		})
 	}
 
-	data, err := h.svc.GetAnimeEpisodes(c.UserContext(), animeSlug)
+	ctx, cancel := context.WithTimeout(c.UserContext(), 15*time.Second)
+	defer cancel()
+
+	data, err := h.svc.GetAnimeEpisodes(ctx, animeSlug)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error": err.Error(),
@@ -150,7 +174,10 @@ func (h *AnimeHandler) SearchAnime(c *fiber.Ctx) error {
 		})
 	}
 
-	data, err := h.svc.SearchAnime(c.UserContext(), query)
+	ctx, cancel := context.WithTimeout(c.UserContext(), 15*time.Second)
+	defer cancel()
+
+	data, err := h.svc.SearchAnime(ctx, query)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error": err.Error(),
