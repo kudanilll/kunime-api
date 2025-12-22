@@ -119,9 +119,18 @@ Returns service information and available endpoints.
 
 ```json
 {
-  "service": "Kunime API",
-  "version": "1.0",
-  "endpoints": [...]
+  "endpoint": {
+    "Get Anime Batch": "/api/v1/anime/:animeSlug/batch",
+    "Get Anime Detail": "/api/v1/anime/:animeSlug",
+    "Get Anime Episodes": "/api/v1/anime/:animeSlug/episodes",
+    "Get Anime by Genre & Page": "/api/v1/genre/:genreSlug/:page",
+    "Get Completed Anime": "/api/v1/completed-anime/:page",
+    "Get Genres": "/api/v1/genres",
+    "Get Ongoing Anime": "/api/v1/ongoing-anime/:page",
+    "Search Anime": "/api/v1/search/:query"
+  },
+  "github": "https://github.com/kudanilll/kunime-api",
+  "support": "https://buymeacoffee.com/kudanil"
 }
 ```
 
