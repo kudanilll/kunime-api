@@ -57,6 +57,7 @@ All endpoints require the header `X-API-Key: <API_KEY>`
 | GET    | `/api/v1/anime/:animeSlug/batch`    | Anime batch download links             |
 | GET    | `/api/v1/anime/:animeSlug`          | Anime detail                           |
 | GET    | `/api/v1/anime/:animeSlug/episodes` | Anime episode list                     |
+| GET    | `/api/v1/search/:query`             | Search anime                           |
 
 Examples:
 

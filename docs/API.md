@@ -241,6 +241,34 @@ All endpoints below require `X-API-Key`.
 }
 ```
 
+### 8) Search Anime
+
+- `GET /api/v1/search/:query`
+- `query` (path, required): e.g. `shingeki+no`
+
+**Response**
+
+```json
+{
+  "query": "shingeki+no",
+  "data": [
+    {
+      "title": "Shingeki no Kyojin: The Final Season – Kanketsu-hen Sub Indo",
+      "status": "OngoingRating : 8.64",
+      "rating": "8.64",
+      "genres": [
+        "Action",
+        "Drama",
+        "Gore",
+        "MilitaryStatus : OngoingRating : 8.64"
+      ],
+      "image": "https://otakudesu.best/wp-content/uploads/2023/03/Shingeki-no-Kyojin-The-Final-Season-Kanketsu-hen.jpg",
+      "endpoint": "https://otakudesu.best/anime/snk-final-part3-sub-indo/"
+    }
+  ]
+}
+```
+
 ## Error Handling
 
 - `400` – invalid or missing path parameters
