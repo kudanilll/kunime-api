@@ -10,6 +10,7 @@ type Scraper interface {
 	ScrapeAnimeBatch(ctx context.Context, animeSlug string) (*AnimeBatch, error)
 	ScrapeAnimeDetail(ctx context.Context, animeSlug string) (*AnimeDetail, error)
 	ScrapeAnimeEpisodes(ctx context.Context, animeSlug string) (*AnimeEpisodeList, error)
+	SearchAnime(ctx context.Context, query string) (*AnimeSearchResponse, error)
 }
 
 type Service struct {
@@ -55,4 +56,11 @@ func (s *Service) GetAnimeDetail(ctx context.Context, animeSlug string) (*AnimeD
 
 func (s *Service) GetAnimeEpisodes(ctx context.Context, animeSlug string) (*AnimeEpisodeList, error) {
 	return s.scraper.ScrapeAnimeEpisodes(ctx, animeSlug)
+}
+
+func (s *Service) SearchAnime(
+	ctx context.Context,
+	query string,
+) (*AnimeSearchResponse, error) {
+	return s.scraper.SearchAnime(ctx, query)
 }

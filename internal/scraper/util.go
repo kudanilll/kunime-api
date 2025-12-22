@@ -114,3 +114,54 @@ func extractEpisodeFromTitle(title string) int {
 
 	return n
 }
+
+func extractSearchGenres(text string) []string {
+	// example: "Genres : Comedy, Romance"
+	idx := strings.Index(strings.ToLower(text), "genres")
+	if idx == -1 {
+		return nil
+	}
+
+	part := text[idx:]
+	part = strings.SplitN(part, ":", 2)[1]
+
+	raw := strings.Split(part, ",")
+	genres := make([]string, 0)
+
+	for _, g := range raw {
+		g = strings.TrimSpace(g)
+		if g != "" {
+			genres = append(genres, g)
+		}
+	}
+
+	return genres
+}
+
+func extractSearchStatus(text string) string {
+	// example: "Status : Completed"
+	idx := strings.Index(strings.ToLower(text), "status")
+	if idx == -1 {
+		return "Unknown"
+	}
+
+	part := text[idx:]
+	return extractValue(part)
+}
+
+func extractSearchRating(text string) string {
+	// example: "Rating : 7.20"
+	idx := strings.Index(strings.ToLower(text), "rating")
+	if idx == -1 {
+		return "N/A"
+	}
+
+	part := text[idx:]
+	val := extractValue(part)
+	if val == "" {
+		return "N/A"
+	}
+
+	return val
+}
+

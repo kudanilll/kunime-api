@@ -141,3 +141,21 @@ func (h *AnimeHandler) GetAnimeEpisodes(c *fiber.Ctx) error {
 
 	return c.JSON(data)
 }
+
+func (h *AnimeHandler) SearchAnime(c *fiber.Ctx) error {
+	query := c.Params("query")
+	if query == "" {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": "search query is required",
+		})
+	}
+
+	data, err := h.svc.SearchAnime(c.UserContext(), query)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+
+	return c.JSON(data)
+}

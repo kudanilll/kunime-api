@@ -77,3 +77,17 @@ type AnimeEpisodeList struct {
 	AnimeSlug string         `json:"anime_slug"`
 	Episodes  []AnimeEpisode `json:"episodes"`
 }
+
+type AnimeSearchResult struct {
+	Title    string   `json:"title"`
+	Status   string   `json:"status"`
+	Rating   string   `json:"rating"`
+	Genres   []string `json:"genres"`
+	Image    string   `json:"image"`
+	Endpoint string   `json:"endpoint"`
+}
+
+type AnimeSearchResponse struct {
+	Query string               `json:"query"`
+	Data  []AnimeSearchResult  `json:"data"`
+}
