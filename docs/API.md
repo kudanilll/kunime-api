@@ -30,7 +30,7 @@ Kunime API is a high-performance REST API built with Go and Fiber that provides 
 
 ### Prerequisites
 
-- Go 1.19 or higher
+- Go 1.25+ or higher
 - Valid API key
 
 ### Environment Configuration
