@@ -666,7 +666,7 @@ curl -X POST http://localhost:8080/api/v1/streams/resolve \
 
 ### Streaming Flow
 
-1. Get episode streams (mirrors + tokens)
+#### 1. Get episode streams (mirrors + tokens)
 
 ```bash
 curl -H "X-API-Key: supersecret" \
@@ -683,7 +683,7 @@ The API uses standard HTTP status codes to indicate success or failure.
 }
 ```
 
-2. Resolve a selected stream token into final streaming URL
+#### 2. Resolve a selected stream token into final streaming URL
 
 ```bash
 curl -X POST http://localhost:8080/api/v1/streams/resolve \
@@ -691,12 +691,6 @@ curl -X POST http://localhost:8080/api/v1/streams/resolve \
   -H "Content-Type: application/json" \
   -d '{"token":"<base64-token>"}'
 ```
-
-3. Streaming Resolution
-
-   - Streaming URLs are not static.
-   - Each mirror and resolution must be resolved individually using `/streams/resolve`.
-   - Tokens may expire and should not be cached long-term.
 
 ### Common Status Codes
 
@@ -757,6 +751,12 @@ curl -X POST http://localhost:8080/api/v1/streams/resolve \
 5. **Data Freshness**: Data is scraped in real-time, ensuring up-to-date information but potentially longer response times.
 
 6. **Download Links**: Links in the batch endpoint may redirect through the source site's safelink system.
+
+7. **Streaming Resolution**:
+
+   - Streaming URLs are not static.
+   - Each mirror and resolution must be resolved individually using `/streams/resolve`.
+   - Tokens may expire and should not be cached long-term.
 
 ## Support & Contribution
 
