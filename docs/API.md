@@ -7,6 +7,7 @@
 - [Authentication](#authentication)
 - [Base URLs](#base-urls)
 - [API Endpoints](#api-endpoints)
+- [Streaming Flow](#streaming-flow)
 - [Error Responses](#error-responses)
 
 ## Overview
@@ -579,17 +580,123 @@ curl -X GET "http://localhost:8080/api/v1/search/jujutsu+kaisen" \
 }
 ```
 
-## Error Responses
+### 9. Episode Streaming Mirrors
+
+Get available streaming mirrors for a specific episode.  
+Response contains **quality**, **server**, and **token**.  
+The token must be resolved to obtain the final streaming URL.
+
+**Endpoint:**
+
+```http
+GET /api/v1/anime/:episodeSlug/streams
+```
+
+**Parameters:**
+
+| Name          | Type   | Location | Required | Description                                     |
+| ------------- | ------ | -------- | -------- | ----------------------------------------------- |
+| `episodeSlug` | string | path     | Yes      | Episode slug (e.g. `kni-s2-episode-1-sub-indo`) |
+
+**Example Request:**
+
+```bash
+curl -X GET \
+http://localhost:8080/api/v1/anime/kni-s2-episode-1-sub-indo/streams \
+-H "X-API-Key: your_api_key"
+```
+
+**Success Response (200 OK):**
+
+```json
+{
+  "episode_slug": "kni-s2-episode-1-sub-indo",
+  "streams": [
+    {
+      "quality": "480p",
+      "server": "otakuwatch5",
+      "token": "eyJpZCI6MTkwNDE1LCJpIjowLCJxIjoiNDgwcCJ9"
+    },
+    {
+      "quality": "720p",
+      "server": "mega",
+      "token": "eyJpZCI6MTkwNDE1LCJpIjoyLCJxIjoiNzIwcCJ9"
+    }
+  ]
+}
+```
+
+### 10. Resolve Stream URL
+
+Resolve a stream token into the final iframe streaming URL.
+
+This endpoint performs a backend WordPress AJAX request and returns a direct iframe `src` URL.
+Recommended usage: client selects mirror → backend resolves token.
+
+**Endpoint:**
+
+```http
+POST /api/v1/streams/resolve
+```
+
+**Request Body:**
+
+```json
+{
+  "token": "base64-encoded-token"
+}
+```
+
+**Example Request:**
+
+```bash
+curl -X POST http://localhost:8080/api/v1/streams/resolve \
+  -H "X-API-Key: your_api_key" \
+  -H "Content-Type: application/json" \
+  -d '{"token":"eyJpZCI6MTkwNDE1LCJpIjowLCJxIjoiNDgwcCJ9"}'
+```
+
+**Success Response (200 OK):**
+
+```json
+{
+  "url": "https://desustream.info/dstream/otakuwatch5/v3/index.php?id=VzcwdUErZXJBUVhQ..."
+}
+```
+
+### Streaming Flow
+
+1. Get episode streams (mirrors + tokens)
+
+```bash
+curl -H "X-API-Key: supersecret" \
+http://localhost:8080/api/v1/anime/kni-s2-episode-1-sub-indo/streams
+```
+
+**Error Responses**
 
 The API uses standard HTTP status codes to indicate success or failure.
-
-### Error Response Format
 
 ```json
 {
   "error": "Error message description"
 }
 ```
+
+2. Resolve a selected stream token into final streaming URL
+
+```bash
+curl -X POST http://localhost:8080/api/v1/streams/resolve \
+  -H "X-API-Key: supersecret" \
+  -H "Content-Type: application/json" \
+  -d '{"token":"<base64-token>"}'
+```
+
+3. Streaming Resolution
+
+   - Streaming URLs are not static.
+   - Each mirror and resolution must be resolved individually using `/streams/resolve`.
+   - Tokens may expire and should not be cached long-term.
 
 ### Common Status Codes
 

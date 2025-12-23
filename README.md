@@ -46,18 +46,20 @@ The server will be available at `http://localhost:<PORT>`
 
 All endpoints require the header `X-API-Key: <API_KEY>`
 
-| Method | Path                                | Description                            |
-| ------ | ----------------------------------- | -------------------------------------- |
-| GET    | `/`                                 | Quick info and endpoint list           |
-| GET    | `/healthz`                          | Health check                           |
-| GET    | `/api/v1/ongoing-anime/:page`       | Ongoing anime list (page defaults 1)   |
-| GET    | `/api/v1/completed-anime/:page`     | Completed anime list (page defaults 1) |
-| GET    | `/api/v1/genres`                    | List of available genres               |
-| GET    | `/api/v1/genre/:genreSlug/:page`    | Anime by genre and page                |
-| GET    | `/api/v1/anime/:animeSlug/batch`    | Anime batch download links             |
-| GET    | `/api/v1/anime/:animeSlug`          | Anime detail                           |
-| GET    | `/api/v1/anime/:animeSlug/episodes` | Anime episode list                     |
-| GET    | `/api/v1/search/:query`             | Search anime                           |
+| Method | Path                                 | Description                                  |
+| ------ | ------------------------------------ | -------------------------------------------- |
+| GET    | `/`                                  | Quick info and endpoint list                 |
+| GET    | `/healthz`                           | Health check                                 |
+| GET    | `/api/v1/ongoing-anime/:page`        | Ongoing anime list (page defaults 1)         |
+| GET    | `/api/v1/completed-anime/:page`      | Completed anime list (page defaults 1)       |
+| GET    | `/api/v1/genres`                     | List of available genres                     |
+| GET    | `/api/v1/genre/:genreSlug/:page`     | Anime by genre and page                      |
+| GET    | `/api/v1/anime/:animeSlug/batch`     | Anime batch download links                   |
+| GET    | `/api/v1/anime/:animeSlug`           | Anime detail                                 |
+| GET    | `/api/v1/anime/:animeSlug/episodes`  | Anime episode list                           |
+| GET    | `/api/v1/search/:query`              | Search anime                                 |
+| GET    | `/api/v1/anime/:episodeSlug/streams` | List available streaming mirrors (tokenized) |
+| POST   | `/api/v1/streams/resolve`            | Resolve stream token into final iframe URL   |
 
 Examples:
 
