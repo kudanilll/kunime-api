@@ -399,15 +399,51 @@ curl -X GET "http://localhost:8080/api/v1/anime/kakkou-iinazuke-s2-sub-indo/epis
   "episodes": [
     {
       "episode": 1,
-      "url": "https://otakudesu.best/episode/kni-s2-episode-1-sub-indo/"
+      "slug": "kni-s2-episode-1-sub-indo"
     },
     {
       "episode": 2,
-      "url": "https://otakudesu.best/episode/kni-s2-episode-2-sub-indo/"
+      "slug": "kni-s2-episode-2-sub-indo"
     },
     {
       "episode": 3,
-      "url": "https://otakudesu.best/episode/kni-s2-episode-3-sub-indo/"
+      "slug": "kni-s2-episode-3-sub-indo"
+    },
+    {
+      "episode": 4,
+      "slug": "kni-s2-episode-4-sub-indo"
+    },
+    {
+      "episode": 5,
+      "slug": "kni-s2-episode-5-sub-indo"
+    },
+    {
+      "episode": 6,
+      "slug": "kni-s2-episode-6-sub-indo"
+    },
+    {
+      "episode": 7,
+      "slug": "kni-s2-episode-7-sub-indo"
+    },
+    {
+      "episode": 8,
+      "slug": "kni-s2-episode-8-sub-indo"
+    },
+    {
+      "episode": 9,
+      "slug": "kni-s2-episode-9-sub-indo"
+    },
+    {
+      "episode": 10,
+      "slug": "kni-s2-episode-10-sub-indo"
+    },
+    {
+      "episode": 11,
+      "slug": "kni-s2-episode-11-sub-indo"
+    },
+    {
+      "episode": 12,
+      "slug": "kni-s2-episode-12-sub-indo"
     }
   ]
 }

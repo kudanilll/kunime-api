@@ -21,24 +21,36 @@ func (s *AnimeScraper) ScrapeAnimeEpisodes(
 	c := newCollector(ctx, s.userAgent)
 	episodes := make([]anime.AnimeEpisode, 0)
 
-	c.OnHTML("div.episodelist ul li", func(e *colly.HTMLElement) {
-		link := strings.TrimSpace(e.ChildAttr("a", "href"))
+	c.OnHTML("div.episodelist ul > li", func(e *colly.HTMLElement) {
+		href := strings.TrimSpace(e.ChildAttr("a", "href"))
 		title := strings.TrimSpace(e.ChildText("a"))
 
-		if link == "" || title == "" {
+		if href == "" || title == "" {
 			return
 		}
 
-		// extract episode number from title
-		// example: "... Episode 12 (End) Subtitle Indonesia"
+		// skip batch
+		if !strings.Contains(href, "/episode/") {
+			return
+		}
+
+		// extract episode number
 		epNum := extractEpisodeFromTitle(title)
 		if epNum < 1 {
 			return
 		}
 
+		// convert full URL → slug only
+		// https://otakudesu.best/episode/kni-s2-episode-12-sub-indo/
+		// → kni-s2-episode-12-sub-indo
+		epSlug := extractEpisodeSlug(href)
+		if epSlug == "" {
+			return
+		}
+
 		episodes = append(episodes, anime.AnimeEpisode{
 			Episode: epNum,
-			URL:     link,
+			Slug:    epSlug,
 		})
 	})
 
@@ -60,7 +72,7 @@ func (s *AnimeScraper) ScrapeAnimeEpisodes(
 		return nil, fmt.Errorf("episode list not found")
 	}
 
-	// IMPORTANT: sort from episode 1 → last
+	// sort ascending
 	sort.Slice(episodes, func(i, j int) bool {
 		return episodes[i].Episode < episodes[j].Episode
 	})

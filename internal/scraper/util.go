@@ -165,3 +165,27 @@ func extractSearchRating(text string) string {
 	return val
 }
 
+func extractEpisodeSlug(href string) string {
+	href = strings.TrimSpace(href)
+	if href == "" {
+		return ""
+	}
+
+	// remove query & fragment
+	u, err := url.Parse(href)
+	if err != nil {
+		return ""
+	}
+
+	// /episode/kni-s2-episode-12-sub-indo/
+	parts := strings.Split(strings.Trim(u.Path, "/"), "/")
+	if len(parts) < 2 {
+		return ""
+	}
+
+	if parts[0] != "episode" {
+		return ""
+	}
+
+	return parts[1]
+}

@@ -70,7 +70,7 @@ type AnimeDetail struct {
 
 type AnimeEpisode struct {
 	Episode int    `json:"episode"`
-	URL     string `json:"url"`
+	Slug    string `json:"slug"`
 }
 
 type AnimeEpisodeList struct {
