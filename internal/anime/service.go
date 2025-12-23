@@ -11,6 +11,8 @@ type Scraper interface {
 	ScrapeAnimeDetail(ctx context.Context, animeSlug string) (*AnimeDetail, error)
 	ScrapeAnimeEpisodes(ctx context.Context, animeSlug string) (*AnimeEpisodeList, error)
 	SearchAnime(ctx context.Context, query string) (*AnimeSearchResponse, error)
+	ScrapeEpisodeStreams(ctx context.Context, episodeSlug string) (*EpisodeStreams, error)
+	ResolveStreamURL(ctx context.Context, token string) (string, error)
 }
 
 type Service struct {

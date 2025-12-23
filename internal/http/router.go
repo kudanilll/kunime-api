@@ -17,6 +17,7 @@ func NewServer(cfg config.Config, animeSvc *anime.Service) *fiber.App {
     app.Use(middleware.APIKeyMiddleware(cfg.APIKey))
 
     h := handler.NewAnimeHandler(animeSvc)
+    streamH := handler.NewStreamHandler(animeSvc)
 
 	app.Get("/", func (c *fiber.Ctx) error  {
         return c.JSON(fiber.Map {
@@ -32,6 +33,8 @@ func NewServer(cfg config.Config, animeSvc *anime.Service) *fiber.App {
                 "Get Anime Detail":          "/api/v1/anime/:animeSlug",
                 "Get Anime Episodes":        "/api/v1/anime/:animeSlug/episodes",
                 "Search Anime":              "/api/v1/search/:query",
+                "Get Anime Streams":         "/api/v1/anime/:episodeSlug/streams",
+                "Resolve Stream":            "/api/v1/streams/resolve - POST",
             },
         })
 	})
@@ -59,6 +62,10 @@ func NewServer(cfg config.Config, animeSvc *anime.Service) *fiber.App {
 
     // search
     api.Get("/search/:query", h.SearchAnime)
+
+    // stream endpoints
+    api.Get("/anime/:episodeSlug/streams", streamH.GetEpisodeStreams)
+    api.Post("/streams/resolve", streamH.ResolveStream)
     
     // health check
     app.Get("/healthz", func(c *fiber.Ctx) error {
