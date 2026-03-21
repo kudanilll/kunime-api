@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 
 	"github.com/joho/godotenv"
@@ -14,20 +13,20 @@ import (
 
 func main() {
 
-    // load .env
-    if err := godotenv.Load(); err != nil {
-        log.Println("no .env file found (or failed to load), using system env")
-    }
+	// load .env
+	if err := godotenv.Load(); err != nil {
+		log.Println("no .env file found (or failed to load), using system env")
+	}
 
-    cfg := config.Load()
-    scr := scraper.NewCollyScraper(
-	    cfg.ScrapeBaseURL,
-	    cfg.UserAgent,
-    )
-    animeService := anime.NewService(scr)
-    app := http.NewServer(cfg, animeService)
+	cfg := config.Load()
+	scr := scraper.NewCollyScraper(
+		cfg.ScrapeBaseURL,
+		cfg.UserAgent,
+	)
+	animeService := anime.NewService(scr)
+	app := http.NewServer(cfg, animeService)
 
-	if err := app.Listen(fmt.Sprintf("0.0.0.0:%s", cfg.Port)); err != nil {
+	if err := app.Listen(":" + cfg.Port); err != nil {
 		log.Fatal(err)
 	}
 }
