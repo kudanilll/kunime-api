@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 
 	"github.com/joho/godotenv"
@@ -26,7 +27,7 @@ func main() {
     animeService := anime.NewService(scr)
     app := http.NewServer(cfg, animeService)
 
-    if err := app.Listen(":" + cfg.Port); err != nil {
-        log.Fatal(err)
-    }
+	if err := app.Listen(fmt.Sprintf("0.0.0.0:%s", cfg.Port)); err != nil {
+		log.Fatal(err)
+	}
 }

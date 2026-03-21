@@ -1,6 +1,6 @@
 # Kunime API
 
-Lightweight Go + Fiber service that scrapes anime data from [Otakudesu](https://otakudesu.best) (ongoing, completed, and by genre) and exposes it via REST. Every endpoint requires the `X-API-Key` header.
+Lightweight Go + Fiber service that scrapes anime data from [Otakudesu](https://otakudesu.best) (ongoing, completed, and by genre) and exposes it via REST. All API endpoints require the `X-API-Key` header except `GET /healthz`.
 
 ## Tech Stack
 
@@ -40,16 +40,16 @@ go run ./cmd/server/main.go
 API_KEY=supersecret SCRAPE_BASE_URL=https://otakudesu.best USER_AGENT="Mozilla/5.0 ..." go run ./cmd/server/main.go
 ```
 
-The server will be available at `http://localhost:<PORT>`
+The server listens on `0.0.0.0:<PORT>` and will be available at `http://localhost:<PORT>`
 
 ## Endpoints
 
-All endpoints require the header `X-API-Key: <API_KEY>`
+All endpoints require the header `X-API-Key: <API_KEY>` except `GET /healthz`
 
 | Method | Path                                 | Description                            |
 | ------ | ------------------------------------ | -------------------------------------- |
 | GET    | `/`                                  | Quick info and endpoint list           |
-| GET    | `/healthz`                           | Health check                           |
+| GET    | `/healthz`                           | Health check, no API key required      |
 | GET    | `/api/v1/ongoing-anime/:page`        | Ongoing anime list (page defaults 1)   |
 | GET    | `/api/v1/completed-anime/:page`      | Completed anime list (page defaults 1) |
 | GET    | `/api/v1/genres`                     | List of available genres               |

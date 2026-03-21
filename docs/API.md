@@ -66,11 +66,11 @@ PORT=8080 \
 go run ./cmd/server/main.go
 ```
 
-The server will start at `http://localhost:8080` (or your configured port).
+The server listens on `0.0.0.0:8080` (or your configured port) and is reachable at `http://localhost:8080`.
 
 ## Authentication
 
-All API endpoints (except health check) require authentication via API key.
+All API endpoints except `GET /healthz` require authentication via API key.
 
 **Header Format:**
 
@@ -145,7 +145,7 @@ Returns service health status. **No authentication required.**
 
 ## API Endpoints
 
-All endpoints require the `X-API-Key` header unless otherwise specified.
+All endpoints require the `X-API-Key` header unless otherwise specified. `GET /healthz` is public.
 
 ### 1. Ongoing Anime
 
