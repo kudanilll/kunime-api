@@ -120,6 +120,7 @@ Returns service information and available endpoints.
     "Get Completed Anime": "/api/v1/completed-anime/:page",
     "Get Genres": "/api/v1/genres",
     "Get Ongoing Anime": "/api/v1/ongoing-anime/:page",
+    "Get Scrape Base URL": "/api/v1/scrape-base-url",
     "Search Anime": "/api/v1/search/:query"
   },
   "github": "https://github.com/kudanilll/kunime-api",
@@ -588,7 +589,32 @@ curl -X GET "http://localhost:8080/api/v1/search/jujutsu+kaisen" \
 }
 ```
 
-### 9. Episode Streaming Mirrors
+### 9. Scrape Base URL
+
+Get the currently configured scrape source base URL.
+
+**Endpoint:**
+
+```http
+GET /api/v1/scrape-base-url
+```
+
+**Example Request:**
+
+```bash
+curl -X GET "http://localhost:8080/api/v1/scrape-base-url" \
+  -H "X-API-Key: your_api_key"
+```
+
+**Success Response (200 OK):**
+
+```json
+{
+  "scrape_base_url": "https://otakudesu.best"
+}
+```
+
+### 10. Episode Streaming Mirrors
 
 Get available streaming mirrors for a specific episode.  
 Response contains **quality**, **server**, and **token**.  
@@ -634,7 +660,7 @@ http://localhost:8080/api/v1/anime/kni-s2-episode-1-sub-indo/streams \
 }
 ```
 
-### 10. Resolve Stream URL
+### 11. Resolve Stream URL
 
 Resolve a stream token into the final iframe streaming URL.
 
@@ -773,4 +799,4 @@ For issues, feature requests, or contributions:
 
 **License**: [AGPL-3.0](../LICENSE)
 
-**Last Updated**: February 2026
+**Last Updated**: April 2026

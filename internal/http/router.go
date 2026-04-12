@@ -16,7 +16,7 @@ func NewServer(cfg config.Config, animeSvc *anime.Service) *fiber.App {
     app.Use(middleware.Logging())
     app.Use(middleware.APIKeyMiddleware(cfg.APIKey))
 
-    h := handler.NewAnimeHandler(animeSvc)
+    h := handler.NewAnimeHandler(animeSvc, cfg.ScrapeBaseURL)
     streamH := handler.NewStreamHandler(animeSvc)
 
 	app.Get("/", func (c *fiber.Ctx) error  {
@@ -32,6 +32,7 @@ func NewServer(cfg config.Config, animeSvc *anime.Service) *fiber.App {
                 "Get Anime Batch":           "/api/v1/anime/:animeSlug/batch",
                 "Get Anime Detail":          "/api/v1/anime/:animeSlug",
                 "Get Anime Episodes":        "/api/v1/anime/:animeSlug/episodes",
+                "Get Scrape Base URL":       "/api/v1/scrape-base-url",
                 "Search Anime":              "/api/v1/search/:query",
                 "Get Anime Streams":         "/api/v1/anime/:episodeSlug/streams",
                 "Resolve Stream":            "/api/v1/streams/resolve - POST",
@@ -59,6 +60,9 @@ func NewServer(cfg config.Config, animeSvc *anime.Service) *fiber.App {
     api.Get("/anime/:animeSlug/batch", h.GetAnimeBatch)
     api.Get("/anime/:animeSlug", h.GetAnimeDetail)
     api.Get("/anime/:animeSlug/episodes", h.GetAnimeEpisodes)
+
+    // scraper base url
+    api.Get("/scrape-base-url", h.GetScrapeBaseURL)
 
     // search
     api.Get("/search/:query", h.SearchAnime)

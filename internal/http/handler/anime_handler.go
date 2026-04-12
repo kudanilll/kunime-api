@@ -10,11 +10,15 @@ import (
 )
 
 type AnimeHandler struct {
-	svc *anime.Service
+	svc           *anime.Service
+	scrapeBaseURL string
 }
 
-func NewAnimeHandler(svc *anime.Service) *AnimeHandler {
-	return &AnimeHandler{svc: svc}
+func NewAnimeHandler(svc *anime.Service, scrapeBaseURL string) *AnimeHandler {
+	return &AnimeHandler{
+		svc:           svc,
+		scrapeBaseURL: scrapeBaseURL,
+	}
 }
 
 func (h *AnimeHandler) GetOngoingAnime(c *fiber.Ctx) error {
@@ -185,4 +189,10 @@ func (h *AnimeHandler) SearchAnime(c *fiber.Ctx) error {
 	}
 
 	return c.JSON(data)
+}
+
+func (h *AnimeHandler) GetScrapeBaseURL(c *fiber.Ctx) error {
+	return c.JSON(fiber.Map{
+		"scrape_base_url": h.scrapeBaseURL,
+	})
 }
