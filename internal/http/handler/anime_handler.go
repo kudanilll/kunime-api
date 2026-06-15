@@ -30,9 +30,7 @@ func (h *AnimeHandler) GetOngoingAnime(c *fiber.Ctx) error {
 	data, err := h.svc.GetOngoingAnime(ctx, page)
 
 	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"error": err.Error(),
-		})
+		return respondError(c, err)
 	}
 
 	return c.JSON(fiber.Map{
@@ -49,9 +47,7 @@ func (h *AnimeHandler) GetCompletedAnime(c *fiber.Ctx) error {
 
 	data, err := h.svc.GetCompletedAnime(ctx, page)
 	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"error": err.Error(),
-		})
+		return respondError(c, err)
 	}
 
 	return c.JSON(fiber.Map{
@@ -66,9 +62,7 @@ func (h *AnimeHandler) GetGenres(c *fiber.Ctx) error {
 
 	data, err := h.svc.GetGenres(ctx)
 	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"error": err.Error(),
-		})
+		return respondError(c, err)
 	}
 
 	return c.JSON(fiber.Map{
@@ -95,9 +89,7 @@ func (h *AnimeHandler) GetGenrePage(c *fiber.Ctx) error {
 
 	data, err := h.svc.GetGenrePage(ctx, slug, page)
 	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"error": err.Error(),
-		})
+		return respondError(c, err)
 	}
 
 	return c.JSON(fiber.Map{
@@ -120,9 +112,7 @@ func (h *AnimeHandler) GetAnimeBatch(c *fiber.Ctx) error {
 
 	data, err := h.svc.GetAnimeBatch(ctx, animeSlug)
 	if err != nil {
-		return c.Status(500).JSON(fiber.Map{
-			"error": err.Error(),
-		})
+		return respondError(c, err)
 	}
 
 	return c.JSON(data)
@@ -141,9 +131,7 @@ func (h *AnimeHandler) GetAnimeDetail(c *fiber.Ctx) error {
 
 	data, err := h.svc.GetAnimeDetail(ctx, animeSlug)
 	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"error": err.Error(),
-		})
+		return respondError(c, err)
 	}
 
 	return c.JSON(data)
@@ -162,9 +150,7 @@ func (h *AnimeHandler) GetAnimeEpisodes(c *fiber.Ctx) error {
 
 	data, err := h.svc.GetAnimeEpisodes(ctx, animeSlug)
 	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"error": err.Error(),
-		})
+		return respondError(c, err)
 	}
 
 	return c.JSON(data)
@@ -183,9 +169,7 @@ func (h *AnimeHandler) SearchAnime(c *fiber.Ctx) error {
 
 	data, err := h.svc.SearchAnime(ctx, query)
 	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"error": err.Error(),
-		})
+		return respondError(c, err)
 	}
 
 	return c.JSON(data)
