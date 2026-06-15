@@ -54,12 +54,15 @@ func (s *AnimeScraper) ResolveStreamURL(
 	form.Set("i", strconv.Itoa(payload.I))
 	form.Set("q", payload.Q)
 
-	req, _ := http.NewRequestWithContext(
+	req, err := http.NewRequestWithContext(
 		ctx,
 		http.MethodPost,
 		s.baseURL+"/wp-admin/admin-ajax.php",
 		strings.NewReader(form.Encode()),
 	)
+	if err != nil {
+		return "", fmt.Errorf("create embed request: %w", err)
+	}
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 
 	resp, err := s.client.Do(req)
@@ -79,8 +82,15 @@ func (s *AnimeScraper) ResolveStreamURL(
 		return "", fmt.Errorf("embed data empty")
 	}
 
-	decoded, _ := base64.StdEncoding.DecodeString(res.Data)
-	doc, _ := goquery.NewDocumentFromReader(strings.NewReader(string(decoded)))
+	decoded, err := base64.StdEncoding.DecodeString(res.Data)
+	if err != nil {
+		return "", fmt.Errorf("decode embed data: %w", err)
+	}
+
+	doc, err := goquery.NewDocumentFromReader(strings.NewReader(string(decoded)))
+	if err != nil {
+		return "", fmt.Errorf("parse embed html: %w", err)
+	}
 
 	src, exists := doc.Find("iframe").Attr("src")
 	if !exists {
