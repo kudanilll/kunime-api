@@ -24,7 +24,7 @@ func (h *StreamHandler) GetEpisodeStreams(c *fiber.Ctx) error {
 
 	data, err := h.svc.GetEpisodeStreams(ctx, slug)
 	if err != nil {
-		return c.Status(500).JSON(fiber.Map{"error": err.Error()})
+		return respondError(c, err)
 	}
 	return c.JSON(data)
 }
@@ -42,9 +42,7 @@ func (h *StreamHandler) ResolveStream(c *fiber.Ctx) error {
 
 	resolved, err := h.svc.ResolveStream(ctx, req.Token)
 	if err != nil {
-    	return c.Status(500).JSON(fiber.Map{
-        	"error": err.Error(),
-    	})
+		return respondError(c, err)
 	}
 
 	return c.JSON(fiber.Map{
