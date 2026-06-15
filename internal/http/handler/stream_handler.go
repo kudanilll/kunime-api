@@ -1,7 +1,9 @@
 package handler
 
 import (
+	"context"
 	"kunime-api/internal/anime"
+	"time"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -16,7 +18,11 @@ func NewStreamHandler(svc *anime.Service) *StreamHandler {
 
 func (h *StreamHandler) GetEpisodeStreams(c *fiber.Ctx) error {
 	slug := c.Params("episodeSlug")
-	data, err := h.svc.GetEpisodeStreams(c.Context(), slug)
+
+	ctx, cancel := context.WithTimeout(c.UserContext(), 15*time.Second)
+	defer cancel()
+
+	data, err := h.svc.GetEpisodeStreams(ctx, slug)
 	if err != nil {
 		return c.Status(500).JSON(fiber.Map{"error": err.Error()})
 	}
@@ -31,7 +37,10 @@ func (h *StreamHandler) ResolveStream(c *fiber.Ctx) error {
 		return c.Status(400).JSON(fiber.Map{"error": "token required"})
 	}
 
-	resolved, err := h.svc.ResolveStream(c.Context(), req.Token)
+	ctx, cancel := context.WithTimeout(c.UserContext(), 15*time.Second)
+	defer cancel()
+
+	resolved, err := h.svc.ResolveStream(ctx, req.Token)
 	if err != nil {
     	return c.Status(500).JSON(fiber.Map{
         	"error": err.Error(),

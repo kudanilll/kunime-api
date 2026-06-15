@@ -71,6 +71,10 @@ func (s *AnimeScraper) ResolveStreamURL(
 	}
 	defer resp.Body.Close()
 
+	if resp.StatusCode != http.StatusOK {
+		return "", fmt.Errorf("embed request failed with status %d", resp.StatusCode)
+	}
+
 	var res struct {
 		Data string `json:"data"`
 	}
