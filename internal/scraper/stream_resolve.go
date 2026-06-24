@@ -20,6 +20,10 @@ type mirrorPayload struct {
 }
 
 func decodeMirrorToken(token string) (*mirrorPayload, error) {
+	if len(token) > 10240 {
+		return nil, fmt.Errorf("token too large")
+	}
+
 	raw, err := base64.StdEncoding.DecodeString(token)
 	if err != nil {
 		return nil, err
@@ -84,6 +88,10 @@ func (s *AnimeScraper) ResolveStreamURL(
 
 	if res.Data == "" {
 		return "", fmt.Errorf("embed data empty")
+	}
+
+	if len(res.Data) > 5242880 { // 5MB limit
+		return "", fmt.Errorf("embed data too large")
 	}
 
 	decoded, err := base64.StdEncoding.DecodeString(res.Data)

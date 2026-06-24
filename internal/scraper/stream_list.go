@@ -14,7 +14,9 @@ func (s *AnimeScraper) ScrapeEpisodeStreams(
 	ctx context.Context,
 	episodeSlug string,
 ) (*anime.EpisodeStreams, error) {
-	acquire()
+	if err := acquire(ctx); err != nil {
+		return nil, err
+	}
 	defer release()
 
 	c := newCollector(ctx, s.userAgent)
@@ -23,7 +25,7 @@ func (s *AnimeScraper) ScrapeEpisodeStreams(
 	c.OnHTML(".mirrorstream ul", func(e *colly.HTMLElement) {
 		class := e.Attr("class") // m360p / m480p / m720p
 		quality := strings.TrimPrefix(class, "m")
-		
+
 		if !strings.HasPrefix(class, "m") {
 			return
 		}

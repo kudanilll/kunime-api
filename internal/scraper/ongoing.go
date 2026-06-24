@@ -10,9 +10,10 @@ import (
 	"github.com/gocolly/colly/v2"
 )
 
-
 func (s *AnimeScraper) ScrapeOngoingAnime(ctx context.Context, page int) ([]anime.OngoingAnime, error) {
-	acquire()
+	if err := acquire(ctx); err != nil {
+		return nil, err
+	}
 	defer release()
 
 	ongoings := make([]anime.OngoingAnime, 0)
@@ -23,9 +24,9 @@ func (s *AnimeScraper) ScrapeOngoingAnime(ctx context.Context, page int) ([]anim
 			return
 		}
 
-		epText := strings.TrimSpace(e.ChildText(".epz"))      // "Episode 10"
-		dayText := strings.TrimSpace(e.ChildText(".epztipe")) // "Sabtu"
-		dateText := strings.TrimSpace(e.ChildText(".newnime"))// "06 Des"
+		epText := strings.TrimSpace(e.ChildText(".epz"))       // "Episode 10"
+		dayText := strings.TrimSpace(e.ChildText(".epztipe"))  // "Sabtu"
+		dateText := strings.TrimSpace(e.ChildText(".newnime")) // "06 Des"
 
 		dayParts := strings.Fields(dayText)
 		day := ""
@@ -38,12 +39,12 @@ func (s *AnimeScraper) ScrapeOngoingAnime(ctx context.Context, page int) ([]anim
 		title := strings.TrimSpace(e.ChildText(".thumbz h2.jdlflm"))
 
 		item := anime.OngoingAnime{
-			Title:       title,
-			Episode:     extractEpisodeNumber(epText),
-			Day:         day,
-			Date:        dateText,
-			Image:		 absoluteURL(s.baseURL, img),
-			Endpoint:    href,
+			Title:    title,
+			Episode:  extractEpisodeNumber(epText),
+			Day:      day,
+			Date:     dateText,
+			Image:    absoluteURL(s.baseURL, img),
+			Endpoint: href,
 		}
 
 		ongoings = append(ongoings, item)
