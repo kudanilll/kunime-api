@@ -52,6 +52,6 @@ func (h *StreamHandler) ResolveStream(c *fiber.Ctx) error {
 	}
 
 	return c.JSON(fiber.Map{
-    	"url": resolved.URL,
+		"url": resolved.URL,
 	})
 }

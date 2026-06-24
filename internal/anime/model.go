@@ -88,6 +88,6 @@ type AnimeSearchResult struct {
 }
 
 type AnimeSearchResponse struct {
-	Query string               `json:"query"`
-	Data  []AnimeSearchResult  `json:"data"`
+	Query string              `json:"query"`
+	Data  []AnimeSearchResult `json:"data"`
 }
