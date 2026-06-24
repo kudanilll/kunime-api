@@ -109,5 +109,9 @@ func (s *AnimeScraper) ResolveStreamURL(
 		return "", fmt.Errorf("iframe src not found")
 	}
 
+	if !strings.HasPrefix(src, "http://") && !strings.HasPrefix(src, "https://") {
+		return "", fmt.Errorf("invalid iframe src scheme")
+	}
+
 	return src, nil
 }

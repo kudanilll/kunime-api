@@ -20,7 +20,7 @@ type Service struct {
 }
 
 func NewService(scraper Scraper) *Service {
-    return &Service{scraper: scraper}
+	return &Service{scraper: scraper}
 }
 
 func (s *Service) GetOngoingAnime(ctx context.Context, page int) ([]OngoingAnime, error) {
