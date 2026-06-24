@@ -14,7 +14,9 @@ func (s *AnimeScraper) ScrapeAnimeDetail(
 	ctx context.Context,
 	animeSlug string,
 ) (*anime.AnimeDetail, error) {
-	acquire()
+	if err := acquire(ctx); err != nil {
+		return nil, err
+	}
 	defer release()
 
 	c := newCollector(ctx, s.userAgent)

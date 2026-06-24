@@ -15,7 +15,9 @@ func (s *AnimeScraper) ScrapeAnimeEpisodes(
 	ctx context.Context,
 	animeSlug string,
 ) (*anime.AnimeEpisodeList, error) {
-	acquire()
+	if err := acquire(ctx); err != nil {
+		return nil, err
+	}
 	defer release()
 
 	c := newCollector(ctx, s.userAgent)

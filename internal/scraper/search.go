@@ -16,7 +16,9 @@ func (s *AnimeScraper) SearchAnime(
 	query string,
 ) (*anime.AnimeSearchResponse, error) {
 
-	acquire()
+	if err := acquire(ctx); err != nil {
+		return nil, err
+	}
 	defer release()
 
 	c := newCollector(ctx, s.userAgent)

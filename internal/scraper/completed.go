@@ -11,7 +11,9 @@ import (
 )
 
 func (s *AnimeScraper) ScrapeCompletedAnime(ctx context.Context, page int) ([]anime.CompletedAnime, error) {
-	acquire()
+	if err := acquire(ctx); err != nil {
+		return nil, err
+	}
 	defer release()
 
 	completed := make([]anime.CompletedAnime, 0)
@@ -73,6 +75,6 @@ func (s *AnimeScraper) ScrapeCompletedAnime(ctx context.Context, page int) ([]an
 	if len(completed) == 0 {
 		return nil, fmt.Errorf("no completed anime found")
 	}
-	
+
 	return completed, nil
 }
