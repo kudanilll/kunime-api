@@ -1,57 +1,45 @@
 # Kunime API
 
-Lightweight Go + Fiber service that scrapes anime data from [Otakudesu](https://otakudesu.best) (ongoing, completed, and by genre) and exposes it via REST. All API endpoints require the `X-API-Key` header except `GET /healthz`.
-
-## Tech Stack
-
-- Go 1.27.4 and Fiber v3 for the HTTP server
-- Colly for web scraping
-- Simple logging and API key middleware
-
-## Prerequisites
-
-- Go 1.27.4+ (see [`go.mod`](go.mod))
-- Internet access to the target `SCRAPE_BASE_URL`
-
-## Environment Configuration
-
-Create a `.env` file in the project root (or set environment variables directly):
-
-```env
-PORT=8080
-API_KEY=supersecret
-SCRAPE_BASE_URL=https://otakudesu.best
-USER_AGENT=Mozilla/5.0 ...
-```
-
-| Variable          | Description                            | Default |
-| ----------------- | -------------------------------------- | ------- |
-| `API_KEY`         | API key required in the request header | -       |
-| `SCRAPE_BASE_URL` | Base URL of the data source            | -       |
-| `USER_AGENT`      | User-Agent string for Colly            | -       |
-| `PORT`            | Fiber server port                      | `8080`  |
+Kunime API supplies anime listings, search, and episode data to the [Kunime app](https://github.com/kudanilll/kunime). It fetches catalog pages from Otakudesu with Colly and serves JSON through Fiber. [Kunime Core](https://github.com/kudanilll/kunime-core) uses the completed-anime feed to build recommendations.
 
 ## Run Locally
 
-```bash
-go run ./cmd/server/main.go
+Install Go 1.27.4 or newer, as specified in [`go.mod`](go.mod). Copy [`.env.example`](.env.example) to `.env` and fill in the required values before starting the server.
 
-# or inline env:
-API_KEY=supersecret SCRAPE_BASE_URL=https://otakudesu.best USER_AGENT="Mozilla/5.0 ..." go run ./cmd/server/main.go
+| Variable | What to set |
+| --- | --- |
+| `API_KEY` | The key clients send in the `X-API-Key` header. Required. |
+| `SCRAPE_BASE_URL` | The upstream site URL. The template uses `https://otakudesu.best`; the server requires a value. |
+| `USER_AGENT` | The user-agent string sent to the upstream site. Required. |
+| `PORT` | HTTP port. Defaults to `8080`. |
+
+```sh
+go run ./cmd/server
 ```
 
-The server listens on `0.0.0.0:<PORT>` and will be available at `http://localhost:<PORT>`
+In a second terminal, check that the server is listening:
+
+```sh
+curl --fail http://localhost:8080/healthz
+```
+
+Expect `{"status":"ok"}`. The health check only confirms the HTTP server is responding. To check upstream access, set `API_KEY` in your shell to the value used by the server and request a catalog page:
+
+```sh
+curl --fail -H "X-API-Key: $API_KEY" \
+  http://localhost:8080/api/v1/ongoing-anime/1
+```
 
 ## Endpoints
 
-All endpoints require the header `X-API-Key: <API_KEY>` except `GET /healthz`
+`GET /healthz` is public. Every other route, including `/`, requires `X-API-Key`. See the [API reference](docs/API.md) for request and response examples.
 
 | Method | Path                                 | Description                            |
 | ------ | ------------------------------------ | -------------------------------------- |
 | GET    | `/`                                  | Quick info and endpoint list           |
 | GET    | `/healthz`                           | Health check, no API key required      |
-| GET    | `/api/v1/ongoing-anime/:page`        | Ongoing anime list (page defaults 1)   |
-| GET    | `/api/v1/completed-anime/:page`      | Completed anime list (page defaults 1) |
+| GET    | `/api/v1/ongoing-anime[/:page]`       | Ongoing anime; defaults to page 1      |
+| GET    | `/api/v1/completed-anime[/:page]`     | Completed anime; defaults to page 1    |
 | GET    | `/api/v1/genres`                     | List of available genres               |
 | GET    | `/api/v1/genre/:genreSlug/:page`     | Anime by genre and page                |
 | GET    | `/api/v1/anime/:animeSlug/batch`     | Anime batch download links             |
@@ -60,39 +48,28 @@ All endpoints require the header `X-API-Key: <API_KEY>` except `GET /healthz`
 | GET    | `/api/v1/scrape-base-url`             | Configured source origin                |
 | GET    | `/api/v1/anime/:episodeSlug/streams` | List available streaming mirrors       |
 | GET    | `/api/v1/search/:query`              | Search anime                           |
-| POST   | `/api/v1/streams/resolve`            | Resolve stream token into final url    |
+| POST   | `/api/v1/streams/resolve`             | Resolve a mirror token to a stream URL |
 
-Run `go test -mod=readonly ./...` for the local route contract tests; they do not require the live scraping source.
+## Tests
 
-Examples:
-
-```bash
-curl -H "X-API-Key: supersecret" http://localhost:8080/api/v1/ongoing-anime/1
+```sh
+go test -mod=readonly ./...
 ```
 
-Example response (shortened):
+The route tests cover the public health check, API-key handling, and invalid stream requests without contacting the upstream site.
 
-```json
-{
-  "page": 1,
-  "data": [
-    {
-      "title": "Anime Title",
-      "episode": 10,
-      "day": "Saturday",
-      "date": "06 Dec",
-      "image": "https://otakudesu.best/path/to/image.jpg",
-      "endpoint": "https://otakudesu.best/anime/slug/"
-    }
-  ]
-}
-```
+## Deployment to Dokploy
 
-## Documentation
+The [GitHub Actions workflow](.github/workflows/docker-build-push.yml) runs Go checks and a Docker build on pull requests to `master`. A push to `master` runs the Go checks, pushes a Linux/amd64 image to GitHub Container Registry (GHCR) with `latest` and `sha-<full-commit>` tags, then calls Dokploy. [Dependabot](.github/dependabot.yml) checks Go modules, Actions, and base images weekly.
 
-Full API details live in [`docs/API.md`](docs/API.md)
+1. In Dokploy, select the **Docker** source. Set the image to `ghcr.io/kudanilll/kunime-api:latest` and point the domain to container port `8080`. If the package is private, configure GHCR credentials with `read:packages` and access to the package.
+2. Set `API_KEY`, `SCRAPE_BASE_URL`, `USER_AGENT`, and `PORT=8080` in the application's environment.
+3. Enable **Auto Deploy**. Copy the HTTPS webhook URL from the application's **Deployments** tab into the GitHub Actions secret `DOKPLOY_WEBHOOK_URL`, at repository level or in the `production` environment. Use one deployment trigger per image to avoid duplicate runs.
+4. After a push to `master`, confirm the rollout in Dokploy. Check `GET /healthz` on the deployed domain, then make an authenticated catalog request. The webhook response only confirms Dokploy accepted the request.
 
-## Project Structure (short)
+To roll back, point Dokploy to a known-good `sha-<full-commit>` tag and deploy it manually. Switch back to `latest` when you want automatic deployment to resume.
+
+## Project Structure
 
 - `cmd/server` – application entrypoint
 - `internal/config` – env loader and configuration
@@ -101,15 +78,9 @@ Full API details live in [`docs/API.md`](docs/API.md)
 - `internal/scraper` – scraping logic with Colly
 - `internal/middleware` – logging and API key middleware
 
-## Support me
+## Support
 
-If you find this project helpful, consider buying me a coffee!
-
-<a href="https://buymeacoffee.com/kudanil" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
-
-<div>
-  <a href="https://saweria.co/achmaddaniel" target="_blank"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR381toYEI4e_5hJ3nvA5pzj2PrtNc42FvBgQ&s" alt="Saweria" ></a>
-</div>
+[Buy Me a Coffee](https://buymeacoffee.com/kudanil) · [Saweria](https://saweria.co/achmaddaniel)
 
 ## License
 
