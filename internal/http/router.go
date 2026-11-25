@@ -6,7 +6,7 @@ import (
 	"kunime-api/internal/http/handler"
 	"kunime-api/internal/middleware"
 
-	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v3"
 )
 
 func NewServer(cfg config.Config, animeSvc *anime.Service) *fiber.App {
@@ -19,7 +19,7 @@ func NewServer(cfg config.Config, animeSvc *anime.Service) *fiber.App {
 	h := handler.NewAnimeHandler(animeSvc, cfg.ScrapeBaseURL)
 	streamH := handler.NewStreamHandler(animeSvc)
 
-	app.Get("/", func(c *fiber.Ctx) error {
+	app.Get("/", func(c fiber.Ctx) error {
 		return c.JSON(fiber.Map{
 			"github":        "https://github.com/kudanilll/kunime-api",
 			"support":       "https://buymeacoffee.com/kudanil",
@@ -72,7 +72,7 @@ func NewServer(cfg config.Config, animeSvc *anime.Service) *fiber.App {
 	api.Post("/streams/resolve", streamH.ResolveStream)
 
 	// health check
-	app.Get("/healthz", func(c *fiber.Ctx) error {
+	app.Get("/healthz", func(c fiber.Ctx) error {
 		return c.JSON(fiber.Map{"status": "ok"})
 	})
 

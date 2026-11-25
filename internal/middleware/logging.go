@@ -4,12 +4,12 @@ import (
 	"log"
 	"time"
 
-	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v3"
 )
 
 // Format: [waktu] METHOD PATH STATUS LATENCY IP UA="user-agent" ERR=error
 func Logging() fiber.Handler {
-	return func(c *fiber.Ctx) error {
+	return func(c fiber.Ctx) error {
 		start := time.Now()
 
 		// jalankan handler berikutnya

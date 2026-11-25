@@ -4,11 +4,11 @@ import (
 	"crypto/sha256"
 	"crypto/subtle"
 
-	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v3"
 )
 
 func APIKeyMiddleware(validKey string) fiber.Handler {
-	return func(c *fiber.Ctx) error {
+	return func(c fiber.Ctx) error {
 		if c.Path() == "/healthz" {
 			return c.Next()
 		}

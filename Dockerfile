@@ -1,4 +1,4 @@
-FROM golang:1.25.5-alpine AS builder
+FROM golang:1.27.4-alpine AS builder
 
 WORKDIR /app
 
@@ -14,7 +14,7 @@ ARG TARGETARCH=amd64
 
 RUN CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=${TARGETARCH} go build -o /out/kunime-api ./cmd/server
 
-FROM alpine:3.22
+FROM alpine:3.24
 
 WORKDIR /app
 
