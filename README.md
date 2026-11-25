@@ -4,13 +4,13 @@ Lightweight Go + Fiber service that scrapes anime data from [Otakudesu](https://
 
 ## Tech Stack
 
-- Go (Fiber v2) for the HTTP server
+- Go 1.27.4 and Fiber v3 for the HTTP server
 - Colly for web scraping
 - Simple logging and API key middleware
 
 ## Prerequisites
 
-- Go 1.25+ (see [`go.mod`](go.mod))
+- Go 1.27.4+ (see [`go.mod`](go.mod))
 - Internet access to the target `SCRAPE_BASE_URL`
 
 ## Environment Configuration
@@ -57,9 +57,12 @@ All endpoints require the header `X-API-Key: <API_KEY>` except `GET /healthz`
 | GET    | `/api/v1/anime/:animeSlug/batch`     | Anime batch download links             |
 | GET    | `/api/v1/anime/:animeSlug`           | Anime detail                           |
 | GET    | `/api/v1/anime/:animeSlug/episodes`  | Anime episode list                     |
+| GET    | `/api/v1/scrape-base-url`             | Configured source origin                |
 | GET    | `/api/v1/anime/:episodeSlug/streams` | List available streaming mirrors       |
 | GET    | `/api/v1/search/:query`              | Search anime                           |
 | POST   | `/api/v1/streams/resolve`            | Resolve stream token into final url    |
+
+Run `go test -mod=readonly ./...` for the local route contract tests; they do not require the live scraping source.
 
 Examples:
 
